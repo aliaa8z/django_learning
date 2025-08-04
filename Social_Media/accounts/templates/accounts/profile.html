@@ -6,6 +6,18 @@
 
     <h2 class="text-center">{{ user.username }}</h2>
 
+    {% if request.user.id == user.id %}
+        <a href="{% url 'home:post_create' %}" class="btn btn-info">Create</a><br><br>
+    {% endif %}
+
+
+    {% if request.user.id != user.id and not is_following %}
+        <a href="{% url 'accounts:user_follow' user.id %}" class="btn btn-info">Follow</a><br><br>
+    {% elif  request.user.id != user.id and is_following %}
+        <a href="{% url 'accounts:user_unfollow' user.id %}" class="btn btn-danger">Unfollow</a><br><br>
+    {% endif %}
+
+
     <div class="card">
         {% for post in posts %}
             <a href="{{ post.get_absolute_url }}" class="card-body">{{ post.body|truncatewords:8 }}</a>
